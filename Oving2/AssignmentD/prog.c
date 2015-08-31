@@ -1,24 +1,23 @@
 #include <stdio.h>
 #include <pthread.h>
-#include <semaphore.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-sem_t mut;
+pthread_mutex_t mut;
 
-bool running = true;
-int var1 = 0;
-int var2 = 0;
+bool volatile running = true;
+int volatile var1 = 0;
+int volatile var2 = 0;
 
 void *thread1(void *arg)
 {
     while (running)
     {
-        sem_wait(&mut);
+        pthread_mutex_lock(&mut);
         var1++;
         var2 = var1;
-        sem_post(&mut);
+        pthread_mutex_unlock(&mut);
     }
 
     return NULL;
@@ -28,9 +27,9 @@ void *thread2(void *arg)
 {
     for (int i = 0; i < 20; i++)
     {
-        sem_wait(&mut);
+        pthread_mutex_lock(&mut);
         printf("Number 1 is %i, number 2 is %i\n", var1, var2);
-        sem_post(&mut);
+        pthread_mutex_unlock(&mut);
         usleep(1000000);
     }
     running = false;
@@ -40,9 +39,9 @@ void *thread2(void *arg)
 
 int main(int argc, char *argv[])
 {
-    if(sem_init(&mut, 0, 1)) 
+    if(pthread_mutex_init(&mut, 0)) 
     { 
-        printf("sem_init failed\n"); 
+        printf("mutex_init failed\n"); 
         exit(1); 
     }
 

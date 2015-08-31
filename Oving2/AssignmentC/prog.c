@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <unistd.h>
 
 #define NUM_THREADS 5
 
@@ -18,8 +19,9 @@ void *threadFxn(void *arg)
     {
         sem_wait(&sem);
         localVar++;
-        globalVar++;
-        printf("%s: globalVar = %i, localVar = %i\n", name, globalVar, localVar);
+        int volatile tmpVar = ++globalVar;
+        printf("%s: globalVar = %i, tmpVar = %i, localVar = %i\n", name, globalVar, tmpVar, localVar);
+        usleep(1000000);
         sem_post(&sem);
     }
 

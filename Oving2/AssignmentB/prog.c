@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
         printf("Not enough arguments\n");
         exit(1);
     }
+    
+    setbuf(stdout, NULL);
 
     pthread_t t1, t2;
     int n = atoi(argv[1]);

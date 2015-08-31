@@ -1,34 +1,34 @@
 #include <stdio.h>
 #include <pthread.h>
-#include <semaphore.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #define NUM_PHILS 5
 
-sem_t forks[NUM_PHILS];
+pthread_mutex_t forks[NUM_PHILS];
 
 // Philosopher #i needs fork #i and #(i+1)%N
 void *philosopherFxn(void *arg)
 {
     int i = *(int *)arg;
     int fork1 = i, fork2 = (i+1)%NUM_PHILS;
+
     for (;;)
     {
-        if (sem_wait(&forks[fork1])) 
+        if (pthread_mutex_lock(&forks[fork1]) != 0) 
             goto cleanup_done; 
-        if (sem_trywait(&forks[fork2])) 
+        if (pthread_mutex_trylock(&forks[fork2]) != 0) 
             goto cleanup_partial;
 
         printf("Philosopher %i is eating!\n", i);
 
-        sem_post(&forks[fork2]);
+        pthread_mutex_unlock(&forks[fork2]);
     cleanup_partial:  
-        sem_post(&forks[fork1]);
+        pthread_mutex_unlock(&forks[fork1]);
     cleanup_done:
         
-        usleep(100000);
+        ;//usleep(10000);
     }
 
     return NULL;
@@ -38,9 +38,9 @@ int main(int argc, char *argv[])
 {
     for (int i = 0; i < NUM_PHILS; i++)
     {
-        if(sem_init(&forks[i], 0, 1)) 
+        if(pthread_mutex_init(&forks[i], 0)) 
         { 
-            printf("sem_init failed\n"); 
+            printf("mutex_init failed\n"); 
             exit(1); 
         }
     }
