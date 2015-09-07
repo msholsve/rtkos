@@ -33,3 +33,9 @@
 
 # Tmp files
 *~
+
+# Atmel stuff
+Debug/
+*.avrsuo
+*.atsuo
+
