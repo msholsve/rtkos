@@ -39,3 +39,7 @@ Debug/
 *.avrsuo
 *.atsuo
 *.png
+
+# Makefile stuff
+bin/
+obj/
