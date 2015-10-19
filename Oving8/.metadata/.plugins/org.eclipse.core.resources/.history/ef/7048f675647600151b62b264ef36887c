@@ -1,0 +1,63 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/dispatch.h>
+#include <sys/mman.h>
+
+struct skynetCore_t{
+	pthread_mutex_t protector;
+	pid_t pid;
+};
+
+#define NUM_NAGGERS 4
+
+int main(int argc, char *argv[]) {
+	// Creating shared memory
+	int skynetDesc = shm_open("/skynetcore", O_RDWR, S_IRWXU);
+	struct skynetCore_t* skynetCore = mmap(0, sizeof(struct skynetCore_t), PROT_READ|PROT_WRITE, MAP_SHARED, skynetDesc, 0);
+
+	pthread_mutex_lock(&skynetCore->protector);
+	int corePid = skynetCore->pid;
+	pthread_mutex_unlock(&skynetCore->protector);
+
+	printf("Skynet PID is: %\n", corePid);
+
+	int skynetChannelId = ConnectAttach(0, corePid, 1, 0, 0);
+	int huehue = 5;
+	MsgSend(skynetChannelId, &huehue, sizeof(int), &huehue, sizeof(int));
+	printf("I sent %i and got %i back!", 5, huehue);
+
+	ConnectDetach(skynetChannelId);
+
+	pthread_t naggers[NUM_NAGGERS];
+	int ids[NUM_NAGGERS] = { 1, 2, 3, 4 };
+	for (int i = 0; i < NUM_NAGGERS; i++)
+	{
+		pthread_create(&naggers[i], 0, nagger, &corePid);
+	}
+	for (int i = 0; i < NUM_NAGGERS; i++)
+	{
+		pthread_join(&naggers[i], 0);
+	}
+
+	return 0;
+}
+
+void nagger(void* arg){
+	// Creating shared memory
+	int skynetDesc = shm_open("/skynetcore", O_RDWR, S_IRWXU);
+	struct skynetCore_t* skynetCore = mmap(0, sizeof(struct skynetCore_t), PROT_READ|PROT_WRITE, MAP_SHARED, skynetDesc, 0);
+
+	pthread_mutex_lock(&skynetCore->protector);
+	int corePid = skynetCore->pid;
+	pthread_mutex_unlock(&skynetCore->protector);
+
+	int message = *(int*)arg;
+	int skynetChannelId = ConnectAttach(0, corePid, 1, 0, 0);
+	MsgSend(skynetChannelId, &message, sizeof(int), &message, sizeof(int));
+
+
+}

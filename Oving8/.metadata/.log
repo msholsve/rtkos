@@ -1,0 +1,153 @@
+!SESSION 2015-10-19 13:52:50.523 -----------------------------------------------
+eclipse.buildId=201006232051
+java.version=1.5.0_11
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=no_NO
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.equinox.registry 2 0 2015-10-19 13:53:03.841
+!MESSAGE The extensions and extension-points from the bundle "com.qnx.doc.ide.userguide" are ignored. The bundle is not marked as singleton. 
+
+!ENTRY org.eclipse.ui.workbench 2 0 2015-10-19 13:58:42.434
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2015-10-19 13:58:42.434
+!MESSAGE Conflict for 'AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction':
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@1c55e69),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@1c55e69)),sourcePriority=16640)
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@1c55e69),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@1c55e69)),sourcePriority=16640)
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-10-19 14:01:25.120
+!MESSAGE Indexed 'Oving8QNX' (1 sources, 25 headers) in 1,66 sec: 1 256 declarations; 966 references; 3 unresolved inclusions; 0 syntax errors; 0 unresolved names (0,00 %)
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-10-19 14:13:25.852
+!MESSAGE Indexed 'Oving8QNX#2' (1 sources, 25 headers) in 0,23 sec: 1 256 declarations; 966 references; 3 unresolved inclusions; 0 syntax errors; 0 unresolved names (0,00 %)
+
+!ENTRY org.eclipse.ui.editors 2 0 2015-10-19 14:27:24.890
+!MESSAGE The selected spelling engine does not exist
+
+!ENTRY com.qnx.tools.ide.qde.core 4 0 2015-10-19 14:38:01.499
+!MESSAGE 
+!SUBENTRY 1 com.qnx.tools.ide.qde.core 4 0 2015-10-19 14:38:01.499
+!MESSAGE There are errors
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-10-19 14:41:30.391
+!MESSAGE Indexed 'Oving8QNX2' (0 sources, 20 headers) in 0,09 sec: 631 declarations; 625 references; 3 unresolved inclusions; 0 syntax errors; 0 unresolved names (0,00 %)
+
+!ENTRY com.qnx.tools.ide.SystemProfiler.core 2 2 2015-10-19 15:46:31.056
+!MESSAGE Repairable data format problems
+
+!ENTRY com.qnx.tools.ide.SystemProfiler.core 2 2 2015-10-19 16:00:34.908
+!MESSAGE Repairable data format problems
+
+!ENTRY com.qnx.tools.ide.SystemProfiler.core 2 2 2015-10-19 16:03:15.577
+!MESSAGE Repairable data format problems
+
+!ENTRY org.eclipse.debug.core 4 125 2015-10-19 16:07:51.827
+!MESSAGE Error logged from Debug Core: 
+!STACK 0
+java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.read(Unknown Source)
+	at java.io.DataInputStream.read(Unknown Source)
+	at com.qnx.tools.utils.target.TargetProcess$InputStreamWrapper.read(Unknown Source)
+	at java.io.BufferedInputStream.read1(Unknown Source)
+	at java.io.BufferedInputStream.read(Unknown Source)
+	at java.io.FilterInputStream.read(Unknown Source)
+	at org.eclipse.debug.internal.core.OutputStreamMonitor.read(OutputStreamMonitor.java:144)
+	at org.eclipse.debug.internal.core.OutputStreamMonitor.access$1(OutputStreamMonitor.java:134)
+	at org.eclipse.debug.internal.core.OutputStreamMonitor$1.run(OutputStreamMonitor.java:207)
+	at java.lang.Thread.run(Unknown Source)
+
+!ENTRY org.eclipse.ltk.ui.refactoring 4 10000 2015-10-19 16:09:35.817
+!MESSAGE Internal Error
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Problems encountered while deleting resources.
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:737)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:138)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:260)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:308)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:220)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete 'C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev'.
+org.eclipse.core.runtime.CoreException: Problems encountered while deleting files.
+	at org.eclipse.core.internal.filesystem.local.LocalFile.delete(LocalFile.java:125)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFile(ResourceTree.java:303)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFile(ResourceTree.java:780)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1764)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:724)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:138)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:260)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:308)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:220)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete: C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2015-10-19 16:09:35.818
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 2 org.eclipse.core.resources 4 273 2015-10-19 16:09:35.818
+!MESSAGE Could not delete 'C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev'.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Problems encountered while deleting files.
+	at org.eclipse.core.internal.filesystem.local.LocalFile.delete(LocalFile.java:125)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFile(ResourceTree.java:303)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFile(ResourceTree.java:780)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1764)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:724)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:138)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:260)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:308)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:220)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete: C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev.
+!SUBENTRY 3 org.eclipse.core.filesystem 4 273 2015-10-19 16:09:35.818
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 4 org.eclipse.core.filesystem 4 273 2015-10-19 16:09:35.818
+!MESSAGE Could not delete: C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev.
+
+!ENTRY org.eclipse.core.resources 4 273 2015-10-19 16:09:35.818
+!MESSAGE Problems encountered while deleting resources.
+!SUBENTRY 1 org.eclipse.core.resources 4 273 2015-10-19 16:09:35.818
+!MESSAGE Could not delete 'C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev'.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Problems encountered while deleting files.
+	at org.eclipse.core.internal.filesystem.local.LocalFile.delete(LocalFile.java:125)
+	at org.eclipse.core.internal.resources.ResourceTree.internalDeleteFile(ResourceTree.java:303)
+	at org.eclipse.core.internal.resources.ResourceTree.standardDeleteFile(ResourceTree.java:780)
+	at org.eclipse.core.internal.resources.Resource.unprotectedDelete(Resource.java:1764)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:724)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:138)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:260)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:308)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:220)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:1800)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+Contains: Could not delete: C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev.
+!SUBENTRY 2 org.eclipse.core.filesystem 4 273 2015-10-19 16:09:35.818
+!MESSAGE Problems encountered while deleting files.
+!SUBENTRY 3 org.eclipse.core.filesystem 4 273 2015-10-19 16:09:35.818
+!MESSAGE Could not delete: C:\Users\TEMP\sanntid\rtkos\Oving8\Oving8QNX\192.168.56.101-trace-151019-154804.kev.

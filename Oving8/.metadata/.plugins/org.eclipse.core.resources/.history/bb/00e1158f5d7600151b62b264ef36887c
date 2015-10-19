@@ -1,0 +1,13 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/dispatch.h>
+#include <sys/mman.h>
+
+int main(int argc, char *argv[]) {
+	printf("Welcome to the QNX Momentics IDE\n");
+	return EXIT_SUCCESS;
+}

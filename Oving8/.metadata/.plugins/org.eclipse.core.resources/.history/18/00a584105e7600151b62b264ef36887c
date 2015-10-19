@@ -1,0 +1,33 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/dispatch.h>
+#include <sys/mman.h>
+
+struct skynetCore_t{
+	pthread_mutex_t protector;
+	pid_t pid;
+};
+
+int main(int argc, char *argv[]) {
+	// Creating shared memory
+	int skynetDesc = shm_open("/skynetcore", O_RDWR | O_CREAT, S_IRWXU);
+	ftruncate(skynetDesc, sizeof(struct skynetCore_t));
+	struct skynetCore_t* skynetCore = mmap(0, sizeof(struct skynetCore_t), PROT_READ|PROT_WRITE, MAP_SHARED, skynetDesc, 0);
+
+	pthread_mutexattr_t skynetProtectorAttr;
+	pthread_mutexattr_init(&skynetProtectorAttr);
+	pthread_mutexattr_setpshared(&skynetProtectorAttr, PTHREAD_PROCESS_SHARED);
+	pthread_mutex_init(&skynetCore->protector, &skynetProtectorAttr);
+
+	pthread_mutex_lock(&skynetCore->protector);
+	skynetCore->pid = getpid();
+	pthread_mutex_unlock(&skynetCore->protector);
+
+	pthread_mutex_lock(&skynetCore->protector);
+	printf("Skynet PID is: %i", skynetCore->pid);
+	pthread_mutex_unlock(&skynetCore->protector);
+}
