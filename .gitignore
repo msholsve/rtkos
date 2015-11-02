@@ -43,3 +43,10 @@ Debug/
 # Makefile stuff
 bin/
 obj/
+buildroot*
+.tmp_versions/
+*.symvers
+*.order
+*.o.*
+*.ko.*
+*.mod.*
