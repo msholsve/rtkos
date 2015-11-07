@@ -2,11 +2,13 @@
     Includes
 **********************************************************/
 
-#include <semaphore.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "udp.h"
+#include "miniproject.h"
 #include "signaler.h"
 #include "controller.h"
 
@@ -22,7 +24,7 @@ static pthread_t task;
     Functions
 **********************************************************/
 
-void updSend(char *packet)
+void udpSend(char *packet)
 {
 	int len = strlen(packet);
 
@@ -65,16 +67,18 @@ static void* taskFunction(void *arg)
 
 void udpInit(void)
 {
+	pthread_mutex_init(&mutex, NULL);
+
+	pthread_mutex_lock(&mutex);
 
 	char *ip = "localhost";
 	int port = 9999;
 	int result;
 
-	result = udp_init_client(conn, port, ip);
+	result = udp_init_client(&conn, port, ip);
 	printf("UDP init result: %i\n", result);
 
-
-	pthread_mutex_init(&mutex, NULL);
+	pthread_mutex_unlock(&mutex);
 
 	pthread_create(&task, NULL, taskFunction, NULL);
 }
@@ -83,7 +87,7 @@ void udpCleanup(void)
 {
 	pthread_join(task, NULL);
 
-	udp_close(conn);
+	udp_close(&conn);
 
 	pthread_mutex_destroy(&mutex);
 }

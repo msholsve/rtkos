@@ -3,12 +3,15 @@
     Includes
 **********************************************************/
 
+#include <pthread.h>
 #include <semaphore.h>
 #include <stdlib.h>
-#include <pthread.h>
+#include <stdio.h>
 #include <time.h>
 
 #include "controller.h"
+#include "udp.h"
+#include "miniproject.h"
 
 /**********************************************************
     Static members
@@ -39,10 +42,10 @@ static pthread_t task;
 
 static double calculateInput(double y)
 {
-	double error;
+	double error, derivative;
 
 	error = reference - y;
-	integral += error * args->period_ns;
+	integral += error * period_ns;
 	derivative = error - previous_error;
 	previous_error = error;
 
@@ -61,8 +64,6 @@ static void* taskFunction(void *arg)
 {
 	double u;
 	struct timespec period;
-
-	period_ns = *(long *)arg;
 
 	udpSend("START");
 	clock_gettime(CLOCK_REALTIME, &period);
@@ -84,7 +85,7 @@ static void* taskFunction(void *arg)
 		clock_nanosleep(&period);
 	}
 
-	updSend("STOP"):
+	udpSend("STOP");
 
 	return NULL;
 }
@@ -98,7 +99,7 @@ void controllerInit(void)
 
 void controllerCleanup(void)
 {
-	ptrhead_join(task, NULL);
+	pthread_join(task, NULL);
 
 	sem_destroy(&sem);
 }

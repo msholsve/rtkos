@@ -18,10 +18,10 @@ OFILES := $(OBJFILES:%=obj/%.o)
 
 PROGRAM = controller
 
-CC = $(CROSS)gcc-4.2.4
+CC = $(CROSS)gcc
 
 
-CFLAGS = -Wall -Wextra -pedantic --std=c99
+CFLAGS = -Wall -Wextra -pedantic --std=gnu99
 LDFLAGS = -pthread
 DEFINES = 
 

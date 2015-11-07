@@ -27,7 +27,7 @@ int main()
 {
     printf("Start Client\n");
 
-    initFunc_t initFuncs[NUM_THREADS] = { controllerInit, signalerInit, udpInit };
+    initFunc_t initFuncs[NUM_THREADS] = { udpInit, signalerInit, controllerInit };
 
     cleanupFunc_t cleanupFuncs[NUM_THREADS] = { controllerCleanup, signalerCleanup, udpCleanup };
 

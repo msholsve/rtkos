@@ -2,11 +2,12 @@
     Includes
 **********************************************************/
 
+#include <pthread.h>
 #include <semaphore.h>
 #include <stdlib.h>
-#include <pthread.h>
 
 #include "signaler.h"
+#include "udp.h"    
 
 
 /**********************************************************
@@ -22,7 +23,7 @@ static pthread_t task;
 
 void signalerRecv(char * pkt)
 {
-
+	(void)pkt;
 	sem_post(&sem);
 
 }
@@ -50,7 +51,7 @@ void signalerInit(void)
 
 void signalerCleanup(void)
 {
-	ptrhead_join(task, NULL);
+	pthread_join(task, NULL);
 
 	sem_destroy(&sem);
 }

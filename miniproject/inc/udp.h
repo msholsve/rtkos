@@ -5,4 +5,6 @@ void udpInit(void);
 
 void udpCleanup(void);
 
+void udpSend(char* packet);
+
 #endif
