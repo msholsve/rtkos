@@ -3,7 +3,7 @@
 #######################
 
 # Path for buildroot
-BUILD_DIR := /home/edvard/Documents/Kyb/rtkos
+BUILD_DIR := /home/student/rtkos
 
 # Div paths for building
 KERNELDIR := $(BUILD_DIR)/buildroot-avr32/output/build/linux-2.6.35.4
@@ -11,14 +11,14 @@ CROSS := $(BUILD_DIR)/buildroot-avr32/output/staging/usr/bin/avr32-linux-
 
 CFILES := $(shell find src -mindepth 1 -maxdepth 4 -name "*.c")
 
-INCLUDE := -Iinc
+INCLUDE := -Iinc -I$(BUILD_DIR)/buildroot-avr32/output/staging/usr/include
 
 OBJFILES := $(CFILES:src/%.c=%)
 OFILES := $(OBJFILES:%=obj/%.o)
 
 PROGRAM = controller
 
-CC = $(CROSS)gcc
+CC = $(CROSS)gcc-4.2.4
 
 
 CFLAGS = -Wall -Wextra -pedantic --std=c99

@@ -2,12 +2,13 @@
 #define MINIPROJECT_H_
 
 #include <arpa/inet.h>
+#include <time.h>
 
 // typedef
 typedef void (*sighandler_t)(int);
 
 // structs that store the information needed for an udp connection
-struct udp_conn 
+struct udp_conn
 {
 	int sock;
 	struct sockaddr_in server;
