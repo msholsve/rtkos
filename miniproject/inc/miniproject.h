@@ -30,8 +30,14 @@ void udp_close(struct udp_conn *udp);
 
 // function replacing clock_nanosleep
 // DO NOT use for periods over 500 ms
-int clock_nanosleep(struct timespec *next);
+int clockNanosleep(struct timespec *next);
 
 void timespec_add_us(struct timespec *t, long us);
+
+// Convenience macro for struct timespec comparing
+#define timercmp(a, b, CMP)          \
+  (((a)->tv_sec == (b)->tv_sec) ?    \
+   ((a)->tv_nsec CMP (b)->tv_nsec) : \
+   ((a)->tv_sec CMP (b)->tv_sec))
 
 #endif /* MINIPROJECT_H_ */

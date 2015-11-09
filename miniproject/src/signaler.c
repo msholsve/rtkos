@@ -9,32 +9,31 @@
 #include "signaler.h"
 #include "udp.h"    
 
-
 /**********************************************************
     Static members
 **********************************************************/
 
-static sem_t sem;
-static pthread_t task;
+// Used by UDP module
+static sem_t notify_sem;
 
 /**********************************************************
     Functions
 **********************************************************/
 
-void signalerRecv(char * pkt)
+void signalerNotify(void)
 {
-	(void)pkt;
-	sem_post(&sem);
-
+	sem_post(&notify_sem);
 }
 
-static void* taskFunction(void *arg)
+// Thread function
+void* signalerTaskFunction(void *arg)
 {
 	(void)arg;
 
 	for (;;)
 	{
-		sem_wait(&sem);
+		// Wait for notification from UDP
+		sem_wait(&notify_sem);
 
 		udpSend("SIGNAL_ACK");
 	}
@@ -44,14 +43,10 @@ static void* taskFunction(void *arg)
 
 void signalerInit(void)
 {
-	sem_init(&sem, 0, 0);
-
-	pthread_create(&task, NULL, taskFunction, NULL);
+	sem_init(&notify_sem, 0, 0);
 }
 
 void signalerCleanup(void)
 {
-	pthread_join(task, NULL);
-
-	sem_destroy(&sem);
+	sem_destroy(&notify_sem);
 }

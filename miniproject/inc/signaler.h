@@ -5,6 +5,9 @@ void signalerInit(void);
 
 void signalerCleanup(void);
 
-void signalerRecv(char * pkt);
+// Called by the UDP module when relevant packet recieved
+void signalerNotify(void);
+
+void* signalerTaskFunction(void *arg);
 
 #endif

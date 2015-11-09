@@ -1,3 +1,4 @@
+
 /**********************************************************
     Includes
 **********************************************************/
@@ -12,13 +13,14 @@
 #include "signaler.h"
 #include "controller.h"
 
-
 /**********************************************************
     Static members
 **********************************************************/
+
 static struct udp_conn conn;
-static pthread_mutex_t mutex;
-static pthread_t task;
+static pthread_mutex_t udp_send_mutex;
+
+static int signal_enable = 0;
 
 /**********************************************************
     Functions
@@ -26,38 +28,49 @@ static pthread_t task;
 
 void udpSend(char *packet)
 {
-	int len = strlen(packet);
+	// +1 for termination char
+	int len = strlen(packet) + 1;
 
-	pthread_mutex_lock(&mutex);
+	pthread_mutex_lock(&udp_send_mutex);
 
 	udp_send(&conn, packet, len);
 
-	pthread_mutex_unlock(&mutex);
+	pthread_mutex_unlock(&udp_send_mutex);
 }
 
-static void* taskFunction(void *arg)
+// Thread function
+void* udpTaskFunction(void *arg)
 {
 	(void)arg;
+
 	char buf[50];
-	int result;
+	int nbytes;
+
+	// Event loop
 	for (;;)
 	{
-		result = udp_receive(&conn, buf, 50);
-		if (result != 0)
+		// udp_receive is blocking
+		nbytes = udp_receive(&conn, buf, 50);
+		if (nbytes == 0)
 			continue;
 
+		// Only two possible packets, testing
+		// for first char
 		switch(buf[0])
 		{
+		// Packet: "SIGNAL"
 		case 'S':
-			signalerRecv(buf);
+			if (signal_enable)
+				signalerNotify();
 			break;
 
+		// Packet: "GET_ACK:xxx.xxx"
 		case 'G':
 			controllerRecv(buf);
 			break;
 
 		default:
-			printf("udp FML\n");
+			printf("Invalid UDP packet\n");
 			break;
 		}
 	}
@@ -65,29 +78,26 @@ static void* taskFunction(void *arg)
 	return NULL;
 }
 
-void udpInit(void)
+void udpInit(char* ip, int sig)
 {
-	pthread_mutex_init(&mutex, NULL);
+	signal_enable = sig;
 
-	pthread_mutex_lock(&mutex);
-
-	char *ip = "localhost";
+	// Hard coded port to match the server
 	int port = 9999;
-	int result;
 
-	result = udp_init_client(&conn, port, ip);
-	printf("UDP init result: %i\n", result);
+	int result = udp_init_client(&conn, port, ip);
+	if (result == -1)
+	{
+		printf("UDP init failed\n");
+		exit(1);
+	}
 
-	pthread_mutex_unlock(&mutex);
-
-	pthread_create(&task, NULL, taskFunction, NULL);
+	pthread_mutex_init(&udp_send_mutex, NULL);
 }
 
 void udpCleanup(void)
 {
-	pthread_join(task, NULL);
-
 	udp_close(&conn);
 
-	pthread_mutex_destroy(&mutex);
+	pthread_mutex_destroy(&udp_send_mutex);
 }

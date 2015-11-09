@@ -18,23 +18,19 @@
 **********************************************************/
 
 // PID variables
-static const double Kp = 10.0;
+static const double Kp = 5.0;
 static const double Ki = 800.0;
-static const double Kd = 0.0;
 
-static double reference;
+static double reference = 1.0;
 static double integral;
 static double previous_error;
 
 // Period for taskFunction
-static long period_ns = 4000; 
+static const long period_ms = 4; 
 
-// Recieved y variable
+// Recieved y variable, synchronized by recv_y_sem
 static double recv_y;
-
-// Controll flow variables
-static sem_t sem;
-static pthread_t task;
+static sem_t recv_y_sem;
 
 /**********************************************************
     Functions
@@ -42,64 +38,73 @@ static pthread_t task;
 
 static double calculateInput(double y)
 {
-	double error, derivative;
+	double error;
 
 	error = reference - y;
-	integral += error * period_ns;
-	derivative = error - previous_error;
+	integral += error * (double)period_ms / 1000.0;
 	previous_error = error;
 
-	return Kp * error + Ki * integral + Kd * derivative;
+	return Kp * error + Ki * integral;
 }
-
 
 void controllerRecv(char * pkt)
 {
+	// Float begins at pos 9
+	// Packet structued as: GET_ACK:xxx.xx
 	recv_y = atof(&pkt[8]);
 
-	sem_post(&sem);
+	sem_post(&recv_y_sem);
 }
 
-static void* taskFunction(void *arg)
+// Thread function
+void* controllerTaskFunction(void *arg)
 {
+	(void)arg;
+
 	double u;
-	struct timespec period;
+	struct timespec period, endtime;
 
+	// This starts the simulation on the server
 	udpSend("START");
+	
+	// Initialize the timespecs	
 	clock_gettime(CLOCK_REALTIME, &period);
+	clock_gettime(CLOCK_REALTIME, &endtime);
 
-	for (;;)
-	{
-		timespec_add_us(&period, period_ns/1000);
-		
+	// Setting endtime to 500 ms
+	timespec_add_us(&endtime, 500 * 1000);
+
+	// Terminates when period surpases endtime
+	while (timercmp(&period, &endtime, <))
+	{		
 		udpSend("GET");
 
-		sem_wait(&sem);
-
+		// Triggered by UDP module
+		sem_wait(&recv_y_sem);
 		u = calculateInput(recv_y);
 
 		char pkt[14];
 		snprintf(pkt, 14, "SET:%4.4f", u);
 		udpSend(pkt);
 
-		clock_nanosleep(&period);
+		// Setting next resume time by adding one period
+		// Note conversion from ms to us
+		timespec_add_us(&period, period_ms*1000);
+		clockNanosleep(&period);
 	}
 
 	udpSend("STOP");
 
+	puts("Ended!");
 	return NULL;
 }
 
 void controllerInit(void)
 {
-	sem_init(&sem, 0, 0);
-
-	pthread_create(&task, NULL, taskFunction, NULL);
+	sem_init(&recv_y_sem, 0, 0);
 }
 
 void controllerCleanup(void)
 {
-	pthread_join(task, NULL);
-
-	sem_destroy(&sem);
+	sem_destroy(&recv_y_sem);
 }
