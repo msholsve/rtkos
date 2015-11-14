@@ -25,7 +25,8 @@ CFLAGS = -g -Wall -Wextra -pedantic --std=gnu99
 LDFLAGS = -pthread -lrt
 DEFINES = 
 
-all: $(PROGRAM)
+all:
+	$(MAKE) $(PROGRAM) 2>&1 | ./colorize
 
 cross:
 	$(MAKE) CC=$(CROSS)gcc
