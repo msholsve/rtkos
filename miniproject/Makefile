@@ -18,20 +18,19 @@ OFILES := $(OBJFILES:%=obj/%.o)
 
 PROGRAM = controller
 
-CC = $(CROSS)gcc
+CC = gcc
+MAKE = make
 
-
-CFLAGS = -Wall -Wextra -pedantic --std=gnu99
+CFLAGS = -g -Wall -Wextra -pedantic --std=gnu99
 LDFLAGS = -pthread -lrt
 DEFINES = 
 
-ifdef DEBUG
-	CFLAGS += -g
-endif
-
 all: $(PROGRAM)
 
-.PHONY: clean all
+cross:
+	$(MAKE) CC=$(CROSS)gcc
+
+.PHONY: clean all cross
 .SUFFIXES:
 
 obj/%.o: src/%.c
@@ -41,7 +40,7 @@ obj/%.o: src/%.c
 
 $(PROGRAM): $(OFILES)
 	@echo Linking $@
-	$(CC) -o bin/$@ $(OFILES) $(LDFLAGS) 
+	$(CC) -o bin/$@ $(OFILES) $(LDFLAGS)
 
 clean:
 	@echo Removing files
